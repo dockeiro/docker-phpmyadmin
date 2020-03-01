@@ -34,7 +34,7 @@ First you need to run MySQL or MariaDB server in Docker, and this image need
 link a running mysql instance container:
 
 ```
-docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 gustavo8000br/phpmyadmin
+docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 gustavo8000br/docker-phpmyadmin
 ```
 
 ## Usage with external server
@@ -43,7 +43,7 @@ You can specify MySQL host in the `PMA_HOST` environment variable. You can also
 use `PMA_PORT` to specify port of the server in case it's not the default one:
 
 ```
-docker run --name phpmyadmin -d -e PMA_HOST=dbhost -p 8080:80 gustavo8000br/phpmyadmin
+docker run --name phpmyadmin -d -e PMA_HOST=dbhost -p 8080:80 gustavo8000br/docker-phpmyadmin
 ```
 
 ## Adding Custom Configuration
@@ -57,7 +57,7 @@ in it, and then linking it into the container using:
 ```
 On the "docker run" line like this:
 ``` 
-docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 -v /some/local/directory/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php gustavo8000br/phpmyadmin
+docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 -v /some/local/directory/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php gustavo8000br/docker-phpmyadmin
 ```
 
 See the following links for config file information.
