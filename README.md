@@ -20,8 +20,13 @@ The official MySQL and MariaDB use following environment variables to define the
 You can use following tags on Docker hub:
 
 * `latest` - latest stable release
-* `4.7.7` - 4.7.7 release
-* `4.8.3` - 4.8.3 release
+* `5.0.1` - 5.0.1 release
+
+Architectures
+
+* `amd64` - x86-x64 `amd64-version` or `amd64-latest`
+* `arm64v8` - aarch64 `arm64v8-version` or `arm64v8-latest
+* `arm32v7` - armhf `arm32v7-version` or `arm32v7-latest`
 
 ## Usage with linked server
 
@@ -29,7 +34,7 @@ First you need to run MySQL or MariaDB server in Docker, and this image need
 link a running mysql instance container:
 
 ```
-docker run --name myadmin -d --link mysql_db_server:db -p 8080:80 sk278/phpmyadmin-armhf
+docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 gustavo8000br/phpmyadmin
 ```
 
 ## Usage with external server
@@ -38,7 +43,7 @@ You can specify MySQL host in the `PMA_HOST` environment variable. You can also
 use `PMA_PORT` to specify port of the server in case it's not the default one:
 
 ```
-docker run --name myadmin -d -e PMA_HOST=dbhost -p 8080:80 sk278/phpmyadmin-armhf
+docker run --name phpmyadmin -d -e PMA_HOST=dbhost -p 8080:80 gustavo8000br/phpmyadmin
 ```
 
 ## Adding Custom Configuration
@@ -52,7 +57,7 @@ in it, and then linking it into the container using:
 ```
 On the "docker run" line like this:
 ``` 
-docker run --name myadmin -d --link mysql_db_server:db -p 8080:80 -v /some/local/directory/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php sk278/phpmyadmin-armhf
+docker run --name phpmyadmin -d --link mysql_db_server:db -p 8080:80 -v /some/local/directory/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php gustavo8000br/phpmyadmin
 ```
 
 See the following links for config file information.
@@ -77,5 +82,5 @@ Set the variable ``PMA_ABSOLUTE_URI`` to the fully-qualified path (``https://pma
 
 For more detailed documentation see https://docs.phpmyadmin.net/en/latest/setup.html#installing-using-docker
 
-[hub]: https://hub.docker.com/r/sk278/phpmyadmin-armhf/
+[hub]: https://hub.docker.com/r/gustavo8000br/phpmyadmin/
 
