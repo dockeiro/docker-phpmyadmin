@@ -8,7 +8,7 @@ pipeline {
     GITHUB_TOKEN=credentials('498b4638-2d04-4ce5-832d-8a57d01d97ac')
     EXT_USER = 'phpmyadmin'
     EXT_REPO = 'phpmyadmin'
-    EXT_VERSION_TYPE = 'nightly'
+    EXT_VERSION_TYPE = 'stable'
     CONTAINER_NAME = 'docker-phpmyadmin'
     MY_USER = 'gustavo8000br'
     MY_REPO = 'docker-phpmyadmin'
@@ -93,10 +93,10 @@ pipeline {
         }
       }
     }
-    // If this is a jenkinsfile build use live docker endpoints
+    // If this is a master build use live docker endpoints
     stage("Set ENV live build"){
       when {
-        branch "jenkinsfile"
+        branch "master"
         environment name: 'CHANGE_ID', value: ''
       }
       steps {
@@ -109,7 +109,7 @@ pipeline {
     // If this is a dev build use dev docker endpoints
     stage("Set ENV dev build"){
       when {
-        not {branch "jenkinsfile"}
+        not {branch "master"}
         environment name: 'CHANGE_ID', value: ''
       }
       steps {
@@ -291,7 +291,7 @@ pipeline {
     // If this is a public release tag it in the LS Github
     stage('Github-Tag-Push-Release') {
       when {
-        branch "jenkinsfile"
+        branch "master"
         expression {
           env.MY_RELEASE != env.EXT_RELEASE_CLEAN + '-build-' + env.MY_TAG_NUMBER
         }
@@ -303,14 +303,14 @@ pipeline {
         sh '''curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST https://api.github.com/repos/${MY_USER}/${MY_REPO}/git/tags \
         -d '{"tag":"'${EXT_RELEASE_CLEAN}'-${EXT_VERSION_TYPE}''-build-'${MY_TAG_NUMBER}'",\
              "object": "'${COMMIT_SHA}'",\
-             "message": "Tagging Release '${EXT_RELEASE_CLEAN}'-${EXT_VERSION_TYPE}''-build-'${MY_TAG_NUMBER}' to jenkinsfile",\
+             "message": "Tagging Release '${EXT_RELEASE_CLEAN}'-${EXT_VERSION_TYPE}''-build-'${MY_TAG_NUMBER}' to master",\
              "type": "commit",\
              "tagger": {"name": "Jenkins","email": "gustavo8000@icloud.com","date": "'${GITHUB_DATE}'"}}' '''
         echo "Pushing New release for Tag"
         sh '''#! /bin/bash
               curl -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq '. |.body' | sed 's:^.\\(.*\\).$:\\1:' > releasebody.json
               echo '{"name":"'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'",\
-                     "target_commitish": "jenkinsfile",\
+                     "target_commitish": "master",\
                      "name": "'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'",\
                      "body": "**Changes:**\\n\\n'${MY_RELEASE_NOTES}'\\n**'${EXT_REPO}' Changes:**\\n\\n' > start
               printf '","draft": false,"prerelease": false}' >> releasebody.json
