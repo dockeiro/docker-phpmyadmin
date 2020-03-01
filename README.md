@@ -20,7 +20,7 @@ The official MySQL and MariaDB use following environment variables to define the
 You can use following tags on Docker hub:
 
 * `latest` - latest stable release
-* `5.0.1` - 5.0.1 release
+* `nightly` - nightly unstable release
 
 Architectures
 
