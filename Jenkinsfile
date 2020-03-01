@@ -70,7 +70,7 @@ pipeline {
      steps{
        script{
          env.EXT_RELEASE = sh(
-           script: '''curl -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq -r '. | .name' ''',
+           script: '''curl -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq -r '. | .tag_name' ''',
            returnStdout: true).trim()
        }
      }
@@ -305,13 +305,13 @@ pipeline {
              "object": "'${COMMIT_SHA}'",\
              "message": "Tagging Release '${EXT_RELEASE_CLEAN}'-${EXT_VERSION_TYPE}''-build-'${MY_TAG_NUMBER}' to master",\
              "type": "commit",\
-             "tagger": {"name": "Jenkins","email": "gustavo8000@icloud.com","date": "'${GITHUB_DATE}'"}}' '''
+             "tagger": {"name": "Jenkins","tag_name": "'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'","email": "gustavo8000@icloud.com","date": "'${GITHUB_DATE}'"}}' '''
         echo "Pushing New release for Tag"
         sh '''#! /bin/bash
               curl -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq '. |.body' | sed 's:^.\\(.*\\).$:\\1:' > releasebody.json
               echo '{"name":"'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'",\
                      "target_commitish": "master",\
-                     "name": "'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'",\
+                     "tag_name": "'${EXT_RELEASE_CLEAN}'-build-'${MY_TAG_NUMBER}'",\
                      "body": "**Changes:**\\n\\n'${MY_RELEASE_NOTES}'\\n**'${EXT_REPO}' Changes:**\\n\\n' > start
               printf '","draft": false,"prerelease": false}' >> releasebody.json
               paste -d'\\0' start releasebody.json > releasebody.json.done
