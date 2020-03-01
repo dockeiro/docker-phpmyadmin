@@ -1,5 +1,5 @@
 phpmyadmin:
-    image: sk278/phpmyadmin-armhf
+    image: gustavo8000br/phpmyadmin
     container_name: phpmyadmin
     environment:
      - PMA_HOST=<ip/hostname>
