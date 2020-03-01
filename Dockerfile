@@ -1,10 +1,22 @@
-FROM arm32v6/alpine:3.6
+FROM alpine:3.9
 
 # Install dependencies
-RUN apk add --no-cache php7-session php7-mysqli php7-mbstring php7-xml php7-gd php7-zlib php7-bz2 php7-zip php7-openssl php7-curl php7-opcache php7-json nginx php7-fpm supervisor
-
-# Include keyring to verify download
-COPY phpmyadmin.keyring /
+RUN apk add --no-cache \
+    php7-session \
+    php7-mysqli \
+    php7-mbstring \
+    php7-xml \
+    php7-gd \
+    php7-zlib \
+    php7-bz2 \
+    php7-zip \
+    php7-openssl \
+    php7-curl \
+    php7-opcache \
+    php7-json \
+    nginx \
+    php7-fpm \
+    supervisor
 
 # Copy configuration
 COPY etc /etc/
@@ -14,7 +26,7 @@ COPY run.sh /run.sh
 RUN chmod u+rwx /run.sh
 
 # Calculate download URL
-ENV VERSION 4.8.3
+ENV VERSION 5.0.1
 ENV URL https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.tar.gz
 LABEL version=$VERSION
 
@@ -25,7 +37,8 @@ RUN set -x \
     && apk add --no-cache curl gnupg \
     && curl --output phpMyAdmin.tar.gz --location $URL \
     && curl --output phpMyAdmin.tar.gz.asc --location $URL.asc \
-    && gpgv --keyring /phpmyadmin.keyring phpMyAdmin.tar.gz.asc phpMyAdmin.tar.gz \
+    && curl --output phpmyadmin.keyring https://files.phpmyadmin.net/phpmyadmin.keyring \
+    && gpgv --keyring phpmyadmin.keyring phpMyAdmin.tar.gz.asc phpMyAdmin.tar.gz \
     && apk del --no-cache curl gnupg \
     && rm -rf "$GNUPGHOME" \
     && tar xzf phpMyAdmin.tar.gz \
