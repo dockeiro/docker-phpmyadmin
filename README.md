@@ -25,7 +25,7 @@ You can use following tags on Docker hub:
 Architectures
 
 * `amd64` - x86-x64 `amd64-version` or `amd64-latest`
-* `arm64v8` - aarch64 `arm64v8-version` or `arm64v8-latest
+* `arm64v8` - aarch64 `arm64v8-version` or `arm64v8-latest`
 * `arm32v7` - armhf `arm32v7-version` or `arm32v7-latest`
 
 ## Usage with linked server
