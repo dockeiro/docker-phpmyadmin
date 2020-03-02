@@ -47,9 +47,11 @@ RUN set -ex && echo "**** install phpmyadmin ****"; \
     mv phpMyAdmin-${EXT_VERSION}-all-languages /www; \
     rm -rf /www/setup/ /www/examples/ /www/test/ /www/po/ /www/composer.json /www/RELEASE-DATE-$VERSION; \
     sed -i "s@define('CONFIG_DIR'.*@define('CONFIG_DIR', '/etc/phpmyadmin/');@" /www/libraries/vendor_config.php; \
+    mkdir /www/tmp; \
     chown -R root:nobody /www; \
     find /www -type d -exec chmod 750 {} \; &&\
     find /www -type f -exec chmod 640 {} \; &&\
+    chmod 777 /www/tmp; \
     echo "**** clean up ****"; \
 	rm phpMyAdmin-${EXT_VERSION}-all-languages.zip; \
     echo "**** Add directory for sessions to allow session persistence ****"; \
